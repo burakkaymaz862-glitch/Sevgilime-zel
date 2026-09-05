@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sana Özel ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #1c1c1e;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* --- KİLİT EKRANI (IPHONE STİLİ) --- */
+        #lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2c3e50, #fd79a8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 0 40px 0;
+            z-index: 1000;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .lock-header {
+            text-align: center;
+        }
+
+        .lock-header i {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .lock-header h2 {
+            font-size: 18px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        /* Şifre Noktaları */
+        .dots-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .dot {
+            width: 14px;
+            height: 14px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .dot.active {
+            background: #fff;
+        }
+
+        /* Tuş Takımı */
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 75px);
+            gap: 20px;
+        }
+
+        .key {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .key:active {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .key span {
+            font-size: 9px;
+            letter-spacing: 2px;
+            margin-top: -2px;
+        }
+
+        /* Hatalı Şifre Efekti */
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        /* --- ANA EKRAN VE İÇERİK --- */
+        #main-screen {
+            display: none;
+            height: 100vh;
+            background: linear-gradient(to bottom, #fff5f6, #e8dff5);
+            color: #333;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Düşen Çiçekler/Kalpler Efekti */
+        .falling-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .falling-item {
+            position: absolute;
+            top: -50px;
+            color: #ff7675;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+            }
+        }
+
+        /* Navigasyon / Sekmeler */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .tab-btn {
+            border: none;
+            background: transparent;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6c5ce7;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #6c5ce7;
+            color: #fff;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Tasarım Kutuları & Sayaçlar */
+        .counter-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(225, 112, 85, 0.15);
+            margin-top: 20px;
+            border: 2px solid #ffeaa7;
+        }
+
+        .counter-card h3 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            color: #d63031;
+            margin-bottom: 15px;
+        }
+
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .timer-box {
+            background: #ffeaa7;
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .timer-box .number {
+            font-size: 20px;
+            font-weight: bold;
+            color: #d63031;
+        }
+
+        .timer-box .label {
+            font-size: 11px;
+            color: #636e72;
+        }
+
+        /* --- KİTAP ALBÜM SEKME STİLİ --- */
+        .book {
+            width: 280px;
+            height: 360px;
+            margin: 30px auto;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .page {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: left;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .page img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 8px solid #fff;
+        }
+
+        .page.flipped {
+            transform: rotateY(-180deg);
+        }
+
+        /* --- PUZZLE SEKME STİLİ --- */
+        #puzzle-board {
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 2px;
+            background: #dfe6e9;
+            border: 4px solid #fff;
+            border-radius: 8px;
+        }
+
+        .puzzle-piece {
+            background-size: 300px 300px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="lock-screen">
+        <div class="lock-header">
+            <i class="fa-solid fa-lock" id="lock-icon"></i>
+            <h2>Parolayı Girin</h2>
+            <div class="dots-container" id="dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+
+        <div class="keypad">
+            <div class="key" onclick="pressKey('1')">1</div>
+            <div class="key" onclick="pressKey('2')">2<span>ABC</span></div>
+            <div class="key" onclick="pressKey('3')">3<span>DEF</span></div>
+            <div class="key" onclick="pressKey('4')">4<span>GHI</span></div>
+            <div class="key" onclick="pressKey('5')">5<span>JKL</span></div>
+            <div class="key" onclick="pressKey('6')">6<span>MNO</span></div>
+            <div class="key" onclick="pressKey('7')">7<span>PQRS</span></div>
+            <div class="key" onclick="pressKey('8')">8<span>TUV</span></div>
+            <div class="key" onclick="pressKey('9')">9<span>WXYZ</span></div>
+            <div></div>
+            <div class="key" onclick="pressKey('0')">0</div>
+            <div></div>
+        </div>
+    </div>
+
+    <div id="main-screen">
+        <div class="falling-container" id="falling-container"></div>
+
+        <nav>
+            <button class="tab-btn active" onclick="switchTab('home')">🌸 Giriş</button>
+            <button class="tab-btn" onclick="switchTab('album')">📖 Albümümüz</button>
+            <button class="tab-btn" onclick="switchTab('puzzle')">🧩 Puzzle</button>
+            <button class="tab-btn" onclick="switchTab('kavusma')">⏳ Kavuşma</button>
+        </nav>
+
+        <div id="tab-home" class="tab-content active">
+            <div class="counter-card">
+                <h3>Bizim Hikayemiz</h3>
+                <p style="margin-bottom: 15px; color: #636e72;">30 Nisan'dan Bu Yana Söyleyen Kalbim...</p>
+                <div class="timer-grid">
+                    <div class="timer-box"><div class="number" id="passed-days">0</div><div class="label">Gün</div></div>
+                    <div class="timer-box"><div class="number" id="passed-hours">0</div><div class="label">Saat</div></div>
+                    <div class="timer-box"><div class="number" id="passed-mins">0</div><div class="label">Dakika</div></div>
+                    <div class="timer-box"><div class="number" id="passed-secs">0</div><div class="label">Saniye</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-album" class="tab-content">
+            <h2 style="font-family: 'Great Vibes', cursive; font-size: 32px; color: #d63031;">Fotoğraf Albümümüz</h2>
+            <p style="font-size: 12px; color: #777;">Sayfayı çevirmek için üzerine tıkla</p>
+            <div class="book" id="book">
+                <div class="page" style="z-index: 3;" onclick="flipPage(this)">
+                    <img src="https://picsum.photos/300/400?random=1" alt="Foto 1">
+                </div>
+                <div class="page" style="z-index: 2;" onclick="flipPage(this)">
+                    <img src="https://picsum.photos/300/400?random=2" alt="Foto 2">
+                </div>
+                <div class="page" style="z-index: 1;" onclick="flipPage(this)">
+                    <img src="https://picsum.photos/300/400?random=3" alt="Foto 3">
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-puzzle" class="tab-content">
+            <h2 style="font-family: 'Great Vibes', cursive; font-size: 32px; color: #d63031;">Aşkımızın Parçaları</h2>
+            <p style="font-size: 12px; color: #777;">Parçaların yerini değiştirmek için tıkla</p>
+            <div id="puzzle-board"></div>
+            <button onclick="initPuzzle()" style="margin-top: 10px; padding: 8px 15px; border-radius: 15px; border: none; background: #6c5ce7; color: white; cursor: pointer;">Karıştır</button>
+        </div>
+
+        <div id="tab-kavusma" class="tab-content">
+            <div class="counter-card" style="border-color: #a29bfe;">
+                <h3>Kavuşma Günümüz</h3>
+                <p style="margin-bottom: 15px; color: #636e72;">21 Eylül'e Kalan Süre</p>
+                <div class="timer-grid">
+                    <div class="timer-box" style="background: #a29bfe; color: #fff;"><div class="number" id="until-days" style="color:#fff;">0</div><div class="label" style="color:#eee;">Gün</div></div>
+                    <div class="timer-box" style="background: #a29bfe; color: #fff;"><div class="number" id="until-hours" style="color:#fff;">0</div><div class="label" style="color:#eee;">Saat</div></div>
+                    <div class="timer-box" style="background: #a29bfe; color: #fff;"><div class="number" id="until-mins" style="color:#fff;">0</div><div class="label" style="color:#eee;">Dakika</div></div>
+                    <div class="timer-box" style="background: #a29bfe; color: #fff;"><div class="number" id="until-secs" style="color:#fff;">0</div><div class="label" style="color:#eee;">Saniye</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- PAROLA KONTROLÜ ---
+        const CORRECT_PIN = "0905";
+        let enteredPin = "";
+
+        function pressKey(num) {
+            if (enteredPin.length < 4) {
+                enteredPin += num;
+                updateDots();
+            }
+
+            if (enteredPin.length === 4) {
+                setTimeout(checkPin, 100);
+            }
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                if (index < enteredPin.length) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function checkPin() {
+            if (enteredPin === CORRECT_PIN) {
+                document.getElementById('lock-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('lock-screen').style.display = 'none';
+                    document.getElementById('main-screen').style.display = 'block';
+                    startFallingAnimation();
+                    initPuzzle();
+                }, 800);
+            } else {
+                const dotsContainer = document.getElementById('dots');
+                dotsContainer.classList.add('shake');
+                setTimeout(() => {
+                    dotsContainer.classList.remove('shake');
+                    enteredPin = "";
+                    updateDots();
+                }, 400);
+            }
+        }
+
+        // --- SEKMELER ARASI GEÇİŞ ---
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // --- DÜŞEN ÇİÇEK VE KALPLER ---
+        function startFallingAnimation() {
+            const container = document.getElementById('falling-container');
+            const items = ['🌸', '🌺', '❤️', '🌹', '✨'];
+            
+            setInterval(() => {
+                const item = document.createElement('div');
+                item.classList.add('falling-item');
+                item.innerText = items[Math.floor(Math.random() * items.length)];
+                item.style.left = Math.random() * 100 + 'vw';
+                item.style.animationDuration = Math.random() * 3 + 2 + 's';
+                item.style.fontSize = Math.random() * 15 + 15 + 'px';
+                
+                container.appendChild(item);
+                
+                setTimeout(() => { item.remove(); }, 5000);
+            }, 300);
+        }
+
+        // --- SAYAÇLAR ---
+        function updateCounters() {
+            const now = new Date();
+
+            // 1. Geçen Zaman Sayacı (30 Nisan)
+            // Bulunduğumuz yıla göre 30 Nisan ayarlanır
+            let startDate = new Date(now.getFullYear(), 3, 30); // 3 = Nisan (0 indexed)
+            if (now < startDate) startDate.setFullYear(now.getFullYear() - 1);
+            
+            const passedDiff = now - startDate;
+            
+            document.getElementById('passed-days').innerText = Math.floor(passedDiff / (1000 * 60 * 60 * 24));
+            document.getElementById('passed-hours').innerText = Math.floor((passedDiff / (1000 * 60 * 60)) % 24);
+            document.getElementById('passed-mins').innerText = Math.floor((passedDiff / 1000 / 60) % 60);
+            document.getElementById('passed-secs').innerText = Math.floor((passedDiff / 1000) % 60);
+
+            // 2. Gelecek Zaman Sayacı (21 Eylül)
+            let targetDate = new Date(now.getFullYear(), 8, 21); // 8 = Eylül
+            if (now > targetDate) targetDate.setFullYear(now.getFullYear() + 1);
+
+            const untilDiff = targetDate - now;
+
+            document.getElementById('until-days').innerText = Math.floor(untilDiff / (1000 * 60 * 60 * 24));
+            document.getElementById('until-hours').innerText = Math.floor((untilDiff / (1000 * 60 * 60)) % 24);
+            document.getElementById('until-mins').innerText = Math.floor((untilDiff / 1000 / 60) % 60);
+            document.getElementById('until-secs').innerText = Math.floor((untilDiff / 1000) % 60);
+        }
+
+        setInterval(updateCounters, 1000);
+        updateCounters();
+
+        // --- ALBÜM SAYFA ÇEVİRME ---
+        function flipPage(page) {
+            page.classList.toggle('flipped');
+        }
+
+        // --- PUZZLE OYUNU ---
+        const puzzleImg = 'https://picsum.photos/300/300?random=10'; // Puzzle fotoğrafı
+        let pieces = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let selectedPiece = null;
+
+        function initPuzzle() {
+            const board = document.getElementById('puzzle-board');
+            board.innerHTML = '';
+            pieces.sort(() => Math.random() - 0.5);
+
+            pieces.forEach((pieceIndex, i) => {
+                const div = document.createElement('div');
+                div.classList.add('puzzle-piece');
+                div.style.backgroundImage = `url(${puzzleImg})`;
+                
+                // Parça pozisyonu hesaplama
+                const row = Math.floor(pieceIndex / 3);
+                const col = pieceIndex % 3;
+                div.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
+                
+                div.dataset.index = i;
+                div.onclick = () => onPieceClick(div);
+                board.appendChild(div);
+            });
+        }
+
+        function onPieceClick(el) {
+            if (selectedPiece === null) {
+                selectedPiece = el;
+                el.style.border = '2px solid #d63031';
+            } else {
+                // İki parçanın arka planını değiştir
+                let bg1 = selectedPiece.style.backgroundPosition;
+                selectedPiece.style.backgroundPosition = el.style.backgroundPosition;
+                el.style.backgroundPosition = bg1;
+
+                selectedPiece.style.border = 'none';
+                selectedPiece = null;
+            }
+        }
+    </script>
+</body>
+</html>
