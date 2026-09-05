@@ -27,7 +27,7 @@
     
     /* Fotoğraf Yükleme & Galeri */
     .upload-section { background: #1c1c1e; padding: 20px; border-radius: 16px; margin-bottom: 25px; border: 1px dashed #48484a; }
-    .upload-btn { background: #ff2d55; color: white; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: 600; display: inline-block; margin-top: 10px; }
+    .upload-btn { background: #ff2d55; color: white; padding: 12px 24px; border-radius: 20px; cursor: pointer; font-weight: 600; display: inline-block; margin-top: 10px; }
     input[type="file"] { display: none; }
     
     .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
@@ -113,6 +113,7 @@
         document.getElementById('passcode-screen').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
         startTimer();
+        loadSavedPhotos();
       } else {
         alert("Hatalı Şifre!");
         enteredCode = "";
@@ -136,21 +137,34 @@
       }, 1000);
     }
 
-    // Fotoğraf Yükleme Fonksiyonu
+    // Fotoğraf Yükleme ve Hafızaya Kaydetme
     function uploadPhotos(event) {
       const files = event.target.files;
-      const gallery = document.getElementById('gallery');
+      let savedPhotos = JSON.parse(localStorage.getItem('savedPhotos') || '[]');
       
       for (let file of files) {
         const reader = new FileReader();
         reader.onload = function(e) {
-          const img = document.createElement('img');
-          img.src = e.target.result;
-          img.className = 'gallery-item';
-          gallery.appendChild(img);
+          const imgData = e.target.result;
+          savedPhotos.push(imgData);
+          localStorage.setItem('savedPhotos', JSON.stringify(savedPhotos));
+          addPhotoToGallery(imgData);
         }
         reader.readAsDataURL(file);
       }
+    }
+
+    function addPhotoToGallery(src) {
+      const gallery = document.getElementById('gallery');
+      const img = document.createElement('img');
+      img.src = src;
+      img.className = 'gallery-item';
+      gallery.appendChild(img);
+    }
+
+    function loadSavedPhotos() {
+      const savedPhotos = JSON.parse(localStorage.getItem('savedPhotos') || '[]');
+      savedPhotos.forEach(src => addPhotoToGallery(src));
     }
   </script>
 </body>
