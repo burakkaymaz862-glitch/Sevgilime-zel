@@ -86,7 +86,7 @@
 
     <!-- Buluşma Sayacı -->
     <div class="timer-card">
-      <div class="timer-title">🗓️ Sonraki Buluşmamıza Kalan Süre</div>
+      <div class="timer-title">🗓️ Buluşmamıza Kalan Süre</div>
       <div class="timer-display" id="meet-timer">Yükleniyor...</div>
     </div>
 
@@ -154,26 +154,45 @@
     }
 
     function startTimers() {
+      // İlişki Başlangıcı: 30 Nisan 2024
       const startDate = new Date("2024-04-30T00:00:00");
-      const nextMeetDate = new Date("2026-10-01T12:00:00");
+      // Hedef Buluşma Tarihi: 21 Eylül 2026
+      const targetMeetDate = new Date("2026-09-21T00:00:00");
 
       setInterval(() => {
         const now = new Date();
         
-        const diffLove = now - startDate;
-        const lDays = Math.floor(diffLove / (1000 * 60 * 60 * 24));
-        const lHours = Math.floor((diffLove / (1000 * 60 * 60)) % 24);
-        const lMins = Math.floor((diffLove / 1000 / 60) % 60);
-        const lSecs = Math.floor((diffLove / 1000) % 60);
-        document.getElementById('love-timer').innerText = `${lDays} Gün ${lHours} Saat ${lMins} Dk ${lSecs} Sn`;
+        // --- 1. Birlikte Geçen Süre (Ay, Gün, Saat, Dakika, Saniye) ---
+        let years = now.getFullYear() - startDate.getFullYear();
+        let months = now.getMonth() - startDate.getMonth();
+        let days = now.getDate() - startDate.getDate();
+        let hours = now.getHours() - startDate.getHours();
+        let minutes = now.getMinutes() - startDate.getMinutes();
+        let seconds = now.getSeconds() - startDate.getSeconds();
 
-        const diffMeet = nextMeetDate - now;
+        if (seconds < 0) { seconds += 60; minutes--; }
+        if (minutes < 0) { minutes += 60; hours--; }
+        if (hours < 0) { hours += 24; days--; }
+        if (days < 0) {
+          const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+          days += previousMonth.getDate();
+          months--;
+        }
+        if (months < 0) { months += 12; years--; }
+
+        const totalMonths = (years * 12) + months;
+        document.getElementById('love-timer').innerText = 
+          `${totalMonths} Ay ${days} Gün ${hours} Saat ${minutes} Dk ${seconds} Sn`;
+
+        // --- 2. Buluşmaya Kalan Süre (Gün, Saat, Dakika, Saniye) ---
+        const diffMeet = targetMeetDate - now;
         if (diffMeet > 0) {
           const mDays = Math.floor(diffMeet / (1000 * 60 * 60 * 24));
           const mHours = Math.floor((diffMeet / (1000 * 60 * 60)) % 24);
-          const mMins = Math.floor((diffMeet / 1000 / 60) % 60);
+          const mMins = Math.floor((diffMeet / (1000 * 60)) % 60);
           const mSecs = Math.floor((diffMeet / 1000) % 60);
-          document.getElementById('meet-timer').innerText = `${mDays} Gün ${mHours} Saat ${mMins} Dk ${mSecs} Sn`;
+          document.getElementById('meet-timer').innerText = 
+            `${mDays} Gün ${mHours} Saat ${mMins} Dk ${mSecs} Sn`;
         } else {
           document.getElementById('meet-timer').innerText = "Kavuştuk! ❤️";
         }
