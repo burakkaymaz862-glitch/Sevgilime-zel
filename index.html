@@ -3,39 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bizim Hikayemiz</title>
+  <title>Bizim Hikayemiz ❤️</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: #000; color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    
+    body { background: linear-gradient(135deg, #1a000c, #0d0006); color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-x: hidden; position: relative; }
+
+    /* Uçuşan Çiçek Yaprakları */
+    .petal { position: absolute; background-color: #ff4d6d; border-radius: 150% 0 150% 0; opacity: 0.7; pointer-events: none; animation: animatePetal 10s linear infinite; }
+    @keyframes animatePetal {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
     /* Şifre Ekranı */
-    #passcode-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100vh; }
-    .lock-icon { font-size: 32px; margin-bottom: 20px; }
-    .passcode-title { font-size: 18px; margin-bottom: 30px; letter-spacing: 1px; }
-    .dots { display: flex; gap: 15px; margin-bottom: 40px; }
-    .dot { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid #fff; }
-    .dot.filled { background-color: #fff; }
-    .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 280px; }
-    .key { width: 70px; height: 70px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); border: none; color: #fff; font-size: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin: auto; }
-    .key:active { background: rgba(255, 255, 255, 0.3); }
+    #passcode-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100vh; z-index: 10; }
+    .lock-icon { font-size: 40px; margin-bottom: 15px; }
+    .passcode-title { font-size: 18px; margin-bottom: 25px; letter-spacing: 1px; color: #ffb3c1; }
+    .dots { display: flex; gap: 15px; margin-bottom: 35px; }
+    .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #ff4d6d; }
+    .dot.filled { background-color: #ff4d6d; box-shadow: 0 0 10px #ff4d6d; }
+    .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 280px; }
+    .key { width: 70px; height: 70px; border-radius: 50%; background: rgba(255, 77, 109, 0.15); border: 1px solid rgba(255, 77, 109, 0.3); color: #fff; font-size: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin: auto; transition: 0.2s; }
+    .key:active { background: #ff4d6d; transform: scale(0.95); }
 
     /* Ana İçerik */
-    #main-content { display: none; width: 100%; max-width: 500px; padding: 20px; text-align: center; }
-    .timer-card { background: #1c1c1e; padding: 20px; border-radius: 16px; margin-bottom: 25px; }
-    .timer-title { color: #8e8e93; font-size: 14px; margin-bottom: 10px; text-transform: uppercase; }
-    .timer-display { font-size: 22px; font-weight: bold; color: #ff2d55; }
-    
-    /* Galeri */
-    .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
-    .gallery-item { width: 100%; height: 200px; border-radius: 12px; object-fit: cover; background: #2c2c2e; }
+    #main-content { display: none; width: 100%; max-width: 500px; padding: 20px; text-align: center; z-index: 10; margin-bottom: 40px; }
+    h1 { margin-bottom: 20px; color: #ff4d6d; font-size: 26px; text-shadow: 0 0 10px rgba(255, 77, 109, 0.5); }
+
+    /* Sayaç Kartları */
+    .timer-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 18px; border-radius: 20px; margin-bottom: 15px; border: 1px solid rgba(255, 77, 109, 0.2); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+    .timer-title { color: #ffb3c1; font-size: 13px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+    .timer-display { font-size: 20px; font-weight: bold; color: #fff; }
+
+    /* Kitap Albüm Alanı */
+    .album-container { margin-top: 30px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 77, 109, 0.2); }
+    .album-title { color: #ff4d6d; font-size: 18px; margin-bottom: 15px; }
+    .book { position: relative; width: 100%; height: 320px; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5); background: #111; }
+    .book img { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .book img.active { display: block; animation: fadeIn 0.5s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .book-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+    .book-btn { background: #ff4d6d; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+    .page-number { color: #ffb3c1; font-size: 14px; }
   </style>
 </head>
 <body>
 
   <!-- 1. ŞİFRE EKRANI -->
   <div id="passcode-screen">
-    <div class="lock-icon">🔒</div>
-    <div class="passcode-title">Parolayı Girin</div>
+    <div class="lock-icon">🌸</div>
+    <div class="passcode-title">Seni Çok Seviyorum</div>
     <div class="dots">
       <div class="dot" id="dot-0"></div>
       <div class="dot" id="dot-1"></div>
@@ -58,43 +76,58 @@
 
   <!-- 2. ANA SİTE İÇERİĞİ -->
   <div id="main-content">
-    <h1 style="margin-bottom: 20px; color: #ff2d55;">Seni Çok Seviyorum ❤️</h1>
+    <h1>İyi Ki Hayatımdasın ❤️</h1>
     
+    <!-- Geçen Süre Sayacı -->
     <div class="timer-card">
-      <div class="timer-title">Birlikte Geçen Süre</div>
-      <div class="timer-display" id="timer">Yükleniyor...</div>
+      <div class="timer-title">💕 Birlikte Geçen Süre</div>
+      <div class="timer-display" id="love-timer">Yükleniyor...</div>
     </div>
 
-    <!-- Fotoğraf Galerisi -->
-    <div class="gallery">
-      <img src="https://ibb.co/fVNGRFVt" class="gallery-item" alt="Anı 1">
-      <img src="https://ibb.co/xK0F7WPN" class="gallery-item" alt="Anı 2">
-      <img src="https://ibb.co/7JQXdHYF" class="gallery-item" alt="Anı 3">
-      <img src="https://ibb.co/HphHgKxW" class="gallery-item" alt="Anı 4">
-      <img src="https://ibb.co/vC6TGn7C" class="gallery-item" alt="Anı 5">
-      <img src="https://ibb.co/VW4FDXN4" class="gallery-item" alt="Anı 6">
-      <img src="https://ibb.co/PsKGQXVP" class="gallery-item" alt="Anı 7">
-      <img src="https://ibb.co/Wp7vdq4c" class="gallery-item" alt="Anı 8">
-      <img src="https://ibb.co/6RkBzbJM" class="gallery-item" alt="Anı 9">
-      <img src="https://ibb.co/Nd4bzJfz" class="gallery-item" alt="Anı 10">
-      <img src="https://ibb.co/W4PdHV5K" class="gallery-item" alt="Anı 11">
-      <img src="https://ibb.co/MD3yDyLD" class="gallery-item" alt="Anı 12">
-      <img src="https://ibb.co/fGLrPXZ5" class="gallery-item" alt="Anı 13">
-      <img src="https://ibb.co/Y4Q826QB" class="gallery-item" alt="Anı 14">
-      <img src="https://ibb.co/v4WVB462" class="gallery-item" alt="Anı 15">
-      <img src="https://ibb.co/WNRRKLG7" class="gallery-item" alt="Anı 16">
-      <img src="https://ibb.co/ksZQcbCX" class="gallery-item" alt="Anı 17">
-      <img src="https://ibb.co/Pq1PpYy" class="gallery-item" alt="Anı 18">
-      <img src="https://ibb.co/N63B5dL2" class="gallery-item" alt="Anı 19">
-      <img src="https://ibb.co/yFDcHxpZ" class="gallery-item" alt="Anı 20">
-      <img src="https://ibb.co/BVkgrs22" class="gallery-item" alt="Anı 21">
-      <img src="https://ibb.co/Df8JxvJt" class="gallery-item" alt="Anı 22">
-      <img src="https://ibb.co/93SbcQCX" class="gallery-item" alt="Anı 23">
-      <img src="https://ibb.co/XkWKBqqd" class="gallery-item" alt="Anı 24">
-      <img src="https://ibb.co/yBfy2Fcr" class="gallery-item" alt="Anı 25">
-      <img src="https://ibb.co/zVd6CWX7" class="gallery-item" alt="Anı 26">
-      <img src="https://ibb.co/B5wf0LYs" class="gallery-item" alt="Anı 27">
-      <img src="https://ibb.co/DPSPX7rz" class="gallery-item" alt="Anı 28">
+    <!-- Buluşma Sayacı -->
+    <div class="timer-card">
+      <div class="timer-title">🗓️ Sonraki Buluşmamıza Kalan Süre</div>
+      <div class="timer-display" id="meet-timer">Yükleniyor...</div>
+    </div>
+
+    <!-- Fotoğraf Albümü Kitabı -->
+    <div class="album-container">
+      <div class="album-title">📖 Anı Albümümüz</div>
+      <div class="book" id="photo-book">
+        <img src="https://i.ibb.co/fVNGRFVt/image.jpg" class="active">
+        <img src="https://i.ibb.co/xK0F7WPN/image.jpg">
+        <img src="https://i.ibb.co/7JQXdHYF/image.jpg">
+        <img src="https://i.ibb.co/HphHgKxW/image.jpg">
+        <img src="https://i.ibb.co/vC6TGn7C/image.jpg">
+        <img src="https://i.ibb.co/VW4FDXN4/image.jpg">
+        <img src="https://i.ibb.co/PsKGQXVP/image.jpg">
+        <img src="https://i.ibb.co/Wp7vdq4c/image.jpg">
+        <img src="https://i.ibb.co/6RkBzbJM/image.jpg">
+        <img src="https://i.ibb.co/Nd4bzJfz/image.jpg">
+        <img src="https://i.ibb.co/W4PdHV5K/image.jpg">
+        <img src="https://i.ibb.co/MD3yDyLD/image.jpg">
+        <img src="https://i.ibb.co/fGLrPXZ5/image.jpg">
+        <img src="https://i.ibb.co/Y4Q826QB/image.jpg">
+        <img src="https://i.ibb.co/v4WVB462/image.jpg">
+        <img src="https://i.ibb.co/WNRRKLG7/image.jpg">
+        <img src="https://i.ibb.co/ksZQcbCX/image.jpg">
+        <img src="https://i.ibb.co/Pq1PpYy/image.jpg">
+        <img src="https://i.ibb.co/N63B5dL2/image.jpg">
+        <img src="https://i.ibb.co/yFDcHxpZ/image.jpg">
+        <img src="https://i.ibb.co/BVkgrs22/image.jpg">
+        <img src="https://i.ibb.co/Df8JxvJt/image.jpg">
+        <img src="https://i.ibb.co/93SbcQCX/image.jpg">
+        <img src="https://i.ibb.co/XkWKBqqd/image.jpg">
+        <img src="https://i.ibb.co/yBfy2Fcr/image.jpg">
+        <img src="https://i.ibb.co/zVd6CWX7/image.jpg">
+        <img src="https://i.ibb.co/B5wf0LYs/image.jpg">
+        <img src="https://i.ibb.co/DPSPX7rz/image.jpg">
+      </div>
+      <div class="book-controls">
+        <button class="book-btn" onclick="changePage(-1)">❮ Önceki</button>
+        <span class="page-number" id="page-num">Sayfa 1 / 28</span>
+        <button class="book-btn" onclick="changePage(1)">Sonraki ❯</button>
+      </div>
     </div>
   </div>
 
@@ -128,7 +161,7 @@
       if (enteredCode === CORRECT_CODE) {
         document.getElementById('passcode-screen').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
-        startTimer();
+        startTimers();
       } else {
         alert("Hatalı Şifre!");
         enteredCode = "";
@@ -136,21 +169,68 @@
       }
     }
 
-    // Sayaç (05 Mayıs 2024 varsayılan)
-    function startTimer() {
+    // Sayaçlar (Tarihleri İstediğin Gibi Düzenleyebilirsin)
+    function startTimers() {
+      // 1. İlişki Başlangıç Tarihi (Örn: 5 Mayıs 2024)
       const startDate = new Date("2024-05-05T00:00:00");
+      // 2. Bir Sonraki Buluşma Tarihi (Örn: 20 Eylül 2026)
+      const nextMeetDate = new Date("2026-09-20T12:00:00");
+
       setInterval(() => {
         const now = new Date();
-        const diff = now - startDate;
         
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const mins = Math.floor((diff / 1000 / 60) % 60);
-        const secs = Math.floor((diff / 1000) % 60);
+        // Geçen Süre
+        const diffLove = now - startDate;
+        const lDays = Math.floor(diffLove / (1000 * 60 * 60 * 24));
+        const lHours = Math.floor((diffLove / (1000 * 60 * 60)) % 24);
+        const lMins = Math.floor((diffLove / 1000 / 60) % 60);
+        const lSecs = Math.floor((diffLove / 1000) % 60);
+        document.getElementById('love-timer').innerText = `${lDays} Gün ${lHours} Saat ${lMins} Dk ${lSecs} Sn`;
 
-        document.getElementById('timer').innerText = `${days} Gün ${hours} Saat ${mins} Dk ${secs} Sn`;
+        // Buluşmaya Kalan Süre
+        const diffMeet = nextMeetDate - now;
+        if (diffMeet > 0) {
+          const mDays = Math.floor(diffMeet / (1000 * 60 * 60 * 24));
+          const mHours = Math.floor((diffMeet / (1000 * 60 * 60)) % 24);
+          const mMins = Math.floor((diffMeet / 1000 / 60) % 60);
+          const mSecs = Math.floor((diffMeet / 1000) % 60);
+          document.getElementById('meet-timer').innerText = `${mDays} Gün ${mHours} Saat ${mMins} Dk ${mSecs} Sn`;
+        } else {
+          document.getElementById('meet-timer').innerText = "Kavuştuk! ❤️";
+        }
       }, 1000);
     }
+
+    // Albüm Kitap Fonksiyonu
+    let currentPage = 0;
+    const images = document.querySelectorAll('.book img');
+    const pageNumText = document.getElementById('page-num');
+
+    function changePage(direction) {
+      images[currentPage].classList.remove('active');
+      currentPage += direction;
+
+      if (currentPage < 0) currentPage = images.length - 1;
+      if (currentPage >= images.length) currentPage = 0;
+
+      images[currentPage].classList.add('active');
+      pageNumText.innerText = `Sayfa ${currentPage + 1} / ${images.length}`;
+    }
+
+    // Arka Planda Uçuşan Çiçekler Oluşturma
+    function createPetals() {
+      for (let i = 0; i < 15; i++) {
+        const petal = document.createElement('div');
+        petal.className = 'petal';
+        petal.style.left = Math.random() * 100 + 'vw';
+        petal.style.width = Math.random() * 10 + 10 + 'px';
+        petal.style.height = Math.random() * 10 + 10 + 'px';
+        petal.style.animationDuration = Math.random() * 5 + 5 + 's';
+        petal.style.animationDelay = Math.random() * 5 + 's';
+        document.body.appendChild(petal);
+      }
+    }
+    createPetals();
   </script>
 </body>
 </html>
