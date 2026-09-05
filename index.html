@@ -38,7 +38,7 @@
     /* Kitap Albüm Alanı */
     .album-container { margin-top: 30px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 77, 109, 0.2); }
     .album-title { color: #ff4d6d; font-size: 18px; margin-bottom: 15px; }
-    .book { position: relative; width: 100%; height: 320px; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5); background: #111; }
+    .book { position: relative; width: 100%; height: 350px; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5); background: #111; }
     .book img { width: 100%; height: 100%; object-fit: cover; display: none; }
     .book img.active { display: block; animation: fadeIn 0.5s ease-in-out; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -169,17 +169,17 @@
       }
     }
 
-    // Sayaçlar (Tarihleri İstediğin Gibi Düzenleyebilirsin)
+    // Sayaçlar
     function startTimers() {
-      // 1. İlişki Başlangıç Tarihi (Örn: 5 Mayıs 2024)
-      const startDate = new Date("2024-05-05T00:00:00");
-      // 2. Bir Sonraki Buluşma Tarihi (Örn: 20 Eylül 2026)
-      const nextMeetDate = new Date("2026-09-20T12:00:00");
+      // 1. İlişki Başlangıç Tarihi: 30 Nisan 2024
+      const startDate = new Date("2024-04-30T00:00:00");
+      // 2. Bir Sonraki Buluşma Tarihi (Hedef tarihini buradan değiştirebilirsin)
+      const nextMeetDate = new Date("2026-10-01T12:00:00");
 
       setInterval(() => {
         const now = new Date();
         
-        // Geçen Süre
+        // Geçen Süre Hesabı
         const diffLove = now - startDate;
         const lDays = Math.floor(diffLove / (1000 * 60 * 60 * 24));
         const lHours = Math.floor((diffLove / (1000 * 60 * 60)) % 24);
@@ -187,7 +187,7 @@
         const lSecs = Math.floor((diffLove / 1000) % 60);
         document.getElementById('love-timer').innerText = `${lDays} Gün ${lHours} Saat ${lMins} Dk ${lSecs} Sn`;
 
-        // Buluşmaya Kalan Süre
+        // Buluşmaya Kalan Süre Hesabı
         const diffMeet = nextMeetDate - now;
         if (diffMeet > 0) {
           const mDays = Math.floor(diffMeet / (1000 * 60 * 60 * 24));
@@ -201,7 +201,7 @@
       }, 1000);
     }
 
-    // Albüm Kitap Fonksiyonu
+    // Albüm Kitap Sayfa Değiştirme
     let currentPage = 0;
     const images = document.querySelectorAll('.book img');
     const pageNumText = document.getElementById('page-num');
@@ -217,7 +217,7 @@
       pageNumText.innerText = `Sayfa ${currentPage + 1} / ${images.length}`;
     }
 
-    // Arka Planda Uçuşan Çiçekler Oluşturma
+    // Uçuşan Çiçek Yaprakları
     function createPetals() {
       for (let i = 0; i < 15; i++) {
         const petal = document.createElement('div');
