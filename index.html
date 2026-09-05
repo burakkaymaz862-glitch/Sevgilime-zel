@@ -25,11 +25,7 @@
     .timer-title { color: #8e8e93; font-size: 14px; margin-bottom: 10px; text-transform: uppercase; }
     .timer-display { font-size: 22px; font-weight: bold; color: #ff2d55; }
     
-    /* Fotoğraf Yükleme & Galeri */
-    .upload-section { background: #1c1c1e; padding: 20px; border-radius: 16px; margin-bottom: 25px; border: 1px dashed #48484a; }
-    .upload-btn { background: #ff2d55; color: white; padding: 12px 24px; border-radius: 20px; cursor: pointer; font-weight: 600; display: inline-block; margin-top: 10px; }
-    input[type="file"] { display: none; }
-    
+    /* Galeri */
     .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
     .gallery-item { width: 100%; height: 200px; border-radius: 12px; object-fit: cover; background: #2c2c2e; }
   </style>
@@ -69,17 +65,39 @@
       <div class="timer-display" id="timer">Yükleniyor...</div>
     </div>
 
-    <!-- Fotoğraf Ekleme Alanı -->
-    <div class="upload-section">
-      <p style="color: #8e8e93; font-size: 14px;">Anılarımızı eklemek için fotoğrafları seç:</p>
-      <label class="upload-btn">
-        📷 Fotoğraf Seç / Yükle
-        <input type="file" id="photo-input" multiple accept="image/*" onchange="uploadPhotos(event)">
-      </label>
+    <!-- Fotoğraf Galerisi (Fotoğraf Linklerini Buraya Yapıştır) -->
+    <div class="gallery">
+      <img src="FOTOĞRAF_LINKI_1" class="gallery-item" alt="Anı 1">https://ibb.co/fVNGRFVt
+<img src="FOTOĞRAF_LINKI_2" class="gallery-item" alt="Anı 2"> https://ibb.co/xK0F7WPN
+<img src="FOTOĞRAF_LINKI_3" class="gallery-item" alt="Anı 3"> https://ibb.co/7JQXdHYF
+ <img src="FOTOĞRAF_LINKI_4" class="gallery-item" alt="Anı 4">https://ibb.co/HphHgKxW
+ <img src="FOTOĞRAF_LINKI_5" class="gallery-item" alt="Anı 5">https://ibb.co/vC6TGn7C
+ <img src="FOTOĞRAF_LINKI_6" class="gallery-item" alt="Anı 6">https://ibb.co/VW4FDXN4
+ <img src="FOTOĞRAF_LINKI_7" class="gallery-item" alt="Anı 7">https://ibb.co/PsKGQXVP
+ <img src="FOTOĞRAF_LINKI_8" class="gallery-item" alt="Anı 8">https://ibb.co/Wp7vdq4c
+ <img src="FOTOĞRAF_LINKI_9" class="gallery-item" alt="Anı 9">https://ibb.co/6RkBzbJM
+ <img src="FOTOĞRAF_LINKI_10" class="gallery-item" alt="Anı 10">https://ibb.co/Nd4bzJfz
+ <img src="FOTOĞRAF_LINKI_11" class="gallery-item" alt="Anı 11">https://ibb.co/W4PdHV5K
+ <img src="FOTOĞRAF_LINKI_12" class="gallery-item" alt="Anı 12">https://ibb.co/MD3yDyLD
+ <img src="FOTOĞRAF_LINKI_13" class="gallery-item" alt="Anı 13">https://ibb.co/fGLrPXZ5
+ <img src="FOTOĞRAF_LINKI_14" class="gallery-item" alt="Anı 14">https://ibb.co/Y4Q826QB
+ <img src="FOTOĞRAF_LINKI_15" class="gallery-item" alt="Anı 15">https://ibb.co/v4WVB462
+ <img src="FOTOĞRAF_LINKI_16" class="gallery-item" alt="Anı 16">https://ibb.co/WNRRKLG7
+ <img src="FOTOĞRAF_LINKI_17" class="gallery-item" alt="Anı 17">https://ibb.co/ksZQcbCX
+ <img src="FOTOĞRAF_LINKI_18" class="gallery-item" alt="Anı 18">https://ibb.co/Pq1PpYy
+ <img src="FOTOĞRAF_LINKI_19" class="gallery-item" alt="Anı 19">https://ibb.co/N63B5dL2
+ <img src="FOTOĞRAF_LINKI_20" class="gallery-item" alt="Anı 20">https://ibb.co/yFDcHxpZ
+ <img src="FOTOĞRAF_LINKI_21" class="gallery-item" alt="Anı 21">https://ibb.co/BVkgrs22
+ <img src="FOTOĞRAF_LINKI_22" class="gallery-item" alt="Anı 22">https://ibb.co/Df8JxvJt
+ <img src="FOTOĞRAF_LINKI_23" class="gallery-item" alt="Anı 23">https://ibb.co/93SbcQCX
+ <img src="FOTOĞRAF_LINKI_24" class="gallery-item" alt="Anı 24">https://ibb.co/XkWKBqqd 
+ <img src="FOTOĞRAF_LINKI_25" class="gallery-item" alt="Anı 25">https://ibb.co/yBfy2Fcr
+ <img src="FOTOĞRAF_LINKI_26" class="gallery-item" alt="Anı 26">https://ibb.co/zVd6CWX7
+ <img src="FOTOĞRAF_LINKI_27" class="gallery-item" alt="Anı 27">https://ibb.co/B5wf0LYs
+ <img src="FOTOĞRAF_LINKI_28" class="gallery-item" alt="Anı 28">https://ibb.co/DPSPX7rz
+      
+      
     </div>
-
-    <!-- Galeri -->
-    <div class="gallery" id="gallery"></div>
   </div>
 
   <script>
@@ -113,7 +131,6 @@
         document.getElementById('passcode-screen').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
         startTimer();
-        loadSavedPhotos();
       } else {
         alert("Hatalı Şifre!");
         enteredCode = "";
@@ -135,36 +152,6 @@
 
         document.getElementById('timer').innerText = `${days} Gün ${hours} Saat ${mins} Dk ${secs} Sn`;
       }, 1000);
-    }
-
-    // Fotoğraf Yükleme ve Hafızaya Kaydetme
-    function uploadPhotos(event) {
-      const files = event.target.files;
-      let savedPhotos = JSON.parse(localStorage.getItem('savedPhotos') || '[]');
-      
-      for (let file of files) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const imgData = e.target.result;
-          savedPhotos.push(imgData);
-          localStorage.setItem('savedPhotos', JSON.stringify(savedPhotos));
-          addPhotoToGallery(imgData);
-        }
-        reader.readAsDataURL(file);
-      }
-    }
-
-    function addPhotoToGallery(src) {
-      const gallery = document.getElementById('gallery');
-      const img = document.createElement('img');
-      img.src = src;
-      img.className = 'gallery-item';
-      gallery.appendChild(img);
-    }
-
-    function loadSavedPhotos() {
-      const savedPhotos = JSON.parse(localStorage.getItem('savedPhotos') || '[]');
-      savedPhotos.forEach(src => addPhotoToGallery(src));
     }
   </script>
 </body>
